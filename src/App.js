@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import About from './components/About';
 import AddTask from './components/AddTask';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import ReactStrapTable from './components/ReactStrapTable';
 import Tasks from './components/Tasks';
 const App = () => {
   const [showAddTask, setShowAddTask] = useState(false)
@@ -87,6 +89,8 @@ const App = () => {
         <Route path='/about' component={About} />
         <Footer />
       </div>
+      <Route path='/table' component={ReactStrapTable} />
+
     </Router>
   )
 }
