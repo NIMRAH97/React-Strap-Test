@@ -1,12 +1,17 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { useEffect, useState } from 'react';
-import { Table } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Table } from 'reactstrap';
 const axios = require('axios')
 
 const ReactStrapTable = (props) => {
 
   // const [loading , setLoading] = useState(true)
   const [data, setData] = useState(null)
+  const [addModal, setAddModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [dataId, setDataId] = useState('');
+  const [dataName, setDataName] = useState('');
 
   useEffect(() => {
 
@@ -18,6 +23,9 @@ const ReactStrapTable = (props) => {
     apiCall()
 
   }, [])
+  const addToggle = () => setAddModal(!addModal);
+  const deleteToggle = () => setDeleteModal(!deleteModal);
+  const editToggle = () => setEditModal(!editModal);
 
   return (
     <>
@@ -33,6 +41,7 @@ const ReactStrapTable = (props) => {
               <tr>
                 <th>id</th>
                 <th>Name</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -41,6 +50,18 @@ const ReactStrapTable = (props) => {
                   <tr>
                     <th scope="row">{el.id}</th>
                     <td>{el.name}</td>
+                    <td>
+                      <Button color="danger" onClick={() => {
+                        setDataName(el.name)
+                        setDataId(el.id)
+                        setEditModal(!editModal);
+                      }}>Edit</Button>
+
+                      <Button color="danger" onClick={() => {
+                        setDataId(el.id)
+                        setDeleteModal(!editModal);
+                      }}>Delete</Button>
+                    </td>
                   </tr>
                 )
               })
@@ -48,6 +69,40 @@ const ReactStrapTable = (props) => {
             </tbody>
           </Table>
       }
+
+      <Button color="danger" onClick={addToggle}>Add</Button>
+      <Modal isOpen={addModal} toggle={addToggle}>
+        <ModalHeader toggle={addToggle}>Modal title</ModalHeader>
+        <ModalBody>
+          Add
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={addToggle}>Do Something</Button>{' '}
+          <Button color="secondary" onClick={addToggle}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={deleteModal} toggle={deleteToggle}>
+        <ModalHeader toggle={deleteToggle}>Modal title</ModalHeader>
+        <ModalBody>
+          Are you sure you want to delete name with id: {dataId}?
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={deleteToggle}>Yes</Button>{' '}
+          <Button color="secondary" onClick={deleteToggle}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={editModal} toggle={editToggle}>
+        <ModalHeader toggle={editToggle}>Modal title</ModalHeader>
+        <ModalBody>
+          Edit: Name is {dataName} with id: {dataId}
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={editToggle}>Do Something</Button>{' '}
+          <Button color="secondary" onClick={editToggle}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
     </>
   );
 }
